@@ -96,6 +96,10 @@
       vscode
       mixxx
       nicotine-plus
+      obsidian
+      signal-desktop
+      whatsapp-for-linux
+      chatgpt-cli
     ];
   };
 
@@ -111,9 +115,7 @@
      pciutils
      usbutils
      git
-     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     obsidian
-  #  wget
+     vim 
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
