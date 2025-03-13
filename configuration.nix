@@ -10,6 +10,8 @@
       ./hardware-configuration.nix
     ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -74,10 +76,20 @@
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
+# use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+
+  #services.syncthing = {
+  #  enable = true;
+  #  openDefaultPorts = true;
+  #  user = "john";
+  #  dataDir = "/home/john/Documents"; # or another path you prefer
+  #  configDir = "/home/john/.config/syncthing"; # where Syncthing keeps its config
+  #};  
+
+  #systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true"; # Don't create default ~/Sync folder
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -87,20 +99,8 @@
     isNormalUser = true;
     description = "John";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-      brave
-      spotify
-      keepassxc
-      syncthing
-      vscode
-      mixxx
-      nicotine-plus
-      obsidian
-      signal-desktop
-      whatsapp-for-linux
-      chatgpt-cli
-    ];
+    # packages and other stuff is defined in home-manager config located
+    # in /home/john/.config/home-manager/home.nix
   };
 
   # Install firefox.
@@ -116,6 +116,9 @@
      usbutils
      git
      vim 
+     htop
+     btop
+     home-manager
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -140,6 +143,11 @@
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
+
+  # Allow incoming connections for syncthing
+  networking.firewall.allowedTCPPorts = [ 22000 ];
+  networking.firewall.allowedUDPPorts = [ 22000 21027 ];
+
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
